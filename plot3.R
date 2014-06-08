@@ -1,0 +1,11 @@
+library(datasets)
+data <- read.csv(file="household_power_consumption.txt", sep=";", na.strings=c("?"), colClasses = c("character","character",rep("numeric",7)))
+data[[2]] <- strptime(paste(data[[1]],data[[2]]), format='%d/%m/%Y %H:%M:%S')
+data[[1]] <- as.Date(data[[1]], format='%d/%m/%Y')
+filtered <- data[data$Date >= as.Date('2007-02-01') & data$Date <= as.Date('2007-02-02')  ,]
+plot(filtered[[2]],filtered[[7]],ylab="Energy sub mettering", xlab="", type = 'l')
+lines(filtered[[2]],filtered[[8]],col="red")
+lines(filtered[[2]],filtered[[9]],col="blue")
+legend("topright", legend = c("Sub_metering_1","Sub_metering_2","Sub_metering_3"), lty = 1,lwd=2.5, col = c('black','red','blue'))
+dev.copy(png, file = "plot3.png",width=480,height=480)
+dev.off()
